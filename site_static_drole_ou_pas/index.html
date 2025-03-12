@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site drôle ou pas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        .wiggle:hover {
+            animation: shake 0.3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-r from-yellow-400 to-pink-500 min-h-screen flex flex-col items-center justify-center text-center p-4">
+    <h1 class="text-5xl font-extrabold text-white drop-shadow-lg">Bienvenue sur le site qui sert à rien !</h1>
+    <p class="text-xl text-white mt-4">Prépare-toi à une avalanche de blagues drôles.. ou pas.. !</p>
+    
+    <button id="jokeButton" class="mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-bold rounded-full shadow-lg transform transition duration-500 hover:scale-110 active:scale-95 wiggle">
+        Clique-moi si t'oses !
+    </button>
+    
+    <div id="jokesContainer" class="mt-10 flex flex-wrap gap-6 justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-xl">
+            <p class="text-xl font-bold" id="jokeSetup">Appuie sur le bouton pour voir une blague !</p>
+            <p class="text-gray-700 mt-2" id="jokePunchline"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("jokeButton").addEventListener("click", function() {
+            fetch("https://official-joke-api.appspot.com/random_joke")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("jokeSetup").textContent = data.setup;
+                    document.getElementById("jokePunchline").textContent = data.punchline;
+                })
+                .catch(error => {
+                    document.getElementById("jokeSetup").textContent = "Oops ! Impossible de charger une blague...";
+                    document.getElementById("jokePunchline").textContent = "Réessaie plus tard !";
+                });
+        });
+    </script>
+</body>
+</html>
